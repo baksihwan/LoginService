@@ -1,16 +1,19 @@
 package com.example.loginservice.Entity;
 
 import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @Entity
+@Table(name = "Member")
 public class Member {
 
     @Id
