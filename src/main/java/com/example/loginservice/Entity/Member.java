@@ -29,10 +29,17 @@ public class Member {
     @Column(name = "nickname")
     private String nickname;
 
+    @Column(nullable = false)
+    private String role;
+
+    @Column(name = "email")
+    private String email;
+
     public Member(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+
     }
 
 

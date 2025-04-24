@@ -8,6 +8,7 @@ import com.example.loginservice.Entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,14 +20,15 @@ public class MemberController {
     private final MemberRepository memberRepository;
 
     @PostMapping("/signup")
-    public ResponseEntity<LoginResponseDto> signup(@RequestBody SignUpRequestDto requestDto){
-        LoginResponseDto loginResponseDto = loginService.signUp(requestDto.getUsername(),
-                                                                requestDto.getPassword(),
-                                                                requestDto.getNickname());
+    public ResponseEntity<LoginResponseDto> signup(@RequestBody SignUpRequestDto requestDto) {
+        LoginResponseDto loginResponseDto = memberService.signUp(requestDto.getUsername(),
+                requestDto.getPassword(),
+                requestDto.getNickname());
         return ResponseEntity.ok(loginResponseDto);
     }
+
     @GetMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<Member> login(@AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
         Member member = memberRepository.findByUsername(username);
         return ResponseEntity.ok(member);

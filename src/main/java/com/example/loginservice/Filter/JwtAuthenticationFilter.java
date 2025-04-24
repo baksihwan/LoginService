@@ -5,26 +5,41 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+
+
+@RequiredArgsConstructor
 @Slf4j
+// JWT 토큰을 검사해서, 로그인 없이 인증해 주는 필터
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private final UserDetailsService authService;
+    private final JwtTokenService jwtTokenService;
+
+
+    public String getUsername(String token){
+        return token.substring(7);
+    }
 
     public Authentication getAuthentication(String token){
         String username = this.getUsername(token);
         UserDetails userDetails = authService.loadUserByUsername(username);
-        return new UsernamePasswordAuthenticationToken(userDetails,"", userDetails.getAuthorities());
-
+        Authentication auth = new UsernamePasswordAuthenticationToken(userDetails,"", userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
+
+        return auth;
     }
 
     @Override
@@ -32,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         //토큰 파싱
-        String token = jwtTokenService.resolveTokenFromRequest(request.getHeader(TOKEN_HEADER));
+        String token = jwtTokenService.resolveTokenFromRequest(request.getHeader("Authorization"));
 
         //토큰 문제 유무 체크
         if(StringUtils.hasText(token) && jwtTokenService.validateToken(token)
@@ -45,12 +60,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        Member member = memberRepository.findByEmail(username)
-                .orElseThrow(()-> new UsernameNotFoundException("회원을 찾을 수 없습니다."));
-        return new CustomUserDetails(member);
-    }
-
 }

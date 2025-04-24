@@ -4,10 +4,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 
+@Component
+//JWT를 생성하고 검증하며, 토큰 안의 정보를 파싱하는 도구 역할
+// 1.토큰 생성  2.토큰 유효성 검증  3.Claims 파싱  4.사용자 정보 추출
 public class JwtUtil {
 
     //비밀 키
@@ -42,6 +46,9 @@ public class JwtUtil {
             } catch (Exception e) {
                 return false;
             }
+        }
+        public String getUsername(String token){
+        return getClaims(token).getSubject();
         }
     }
 
