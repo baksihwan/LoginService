@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+
 public class CustomUserDetails implements UserDetails {
 
     private final Member member;
@@ -52,7 +53,7 @@ public class CustomUserDetails implements UserDetails {
         return true; // 계정 활성화 여부
     }
 
-    public Member getMember() {
+    public Member getMember() { // 멤버 생성자
         return member;
     }
 }
