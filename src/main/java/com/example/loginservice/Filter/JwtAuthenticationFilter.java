@@ -33,6 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return token.substring(7);
     }
 
+    // 토큰을 바탕으로 SecurityContext에 인증 정보를 심는 작업을 한다.
     public Authentication getAuthentication(String token){
         String username = this.getUsername(token);
         UserDetails userDetails = authService.loadUserByUsername(username);
@@ -41,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         return auth;
     }
-
+    // 필터가 실행될 때 호출되는 메서드
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {

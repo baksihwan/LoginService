@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
+// 내가 원하는 방식으로 사용자 정보를 설정하는 클래스
 public class CustomUserDetails implements UserDetails {
 
     private final Member member;
