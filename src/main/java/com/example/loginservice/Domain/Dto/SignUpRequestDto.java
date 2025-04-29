@@ -16,4 +16,16 @@ public class SignUpRequestDto {
         this.password = password;
         this.nickname = nickname;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setNickname(String nickname) {
+    this.nickname = nickname;}
 }
+
